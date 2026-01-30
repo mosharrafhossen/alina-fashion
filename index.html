@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Alina Fashion Store — Demo</title>
+  <meta name="description" content="Alina Fashion Store demo: responsive header, cart, checkout with customer info, lazy-loading, quick view." />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <!-- Promo -->
+  <div class="promo-bar">
+    <div class="container">
+      <div class="promo-text">Special offer — Free shipping on orders over $50 • Coupon: <strong>ALINA10</strong></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header" role="banner" aria-label="Main header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="Alina Fashion home">
+        <img src="images/logo.png" alt="Alina Fashion logo" loading="lazy">
+        <div>
+          <div class="title">Alina Fashion</div>
+          <div class="tag">Step Into Style</div>
+        </div>
+      </a>
+
+      <div class="nav-wrap container" style="max-width:var(--max-width);">
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <a href="#" class="nav-link" data-cat="all">Home</a>
+
+          <div class="nav-link has-dropdown" tabindex="0" aria-haspopup="true">
+            Women ▾
+            <div class="dropdown" role="menu" aria-hidden="true">
+              <a href="#" data-cat="women-dresses" role="menuitem">Dresses</a>
+              <a href="#" data-cat="women-tops" role="menuitem">Tops</a>
+              <a href="#" data-cat="women-bags" role="menuitem">Bags</a>
+            </div>
+          </div>
+
+          <div class="nav-link has-dropdown" tabindex="0" aria-haspopup="true">
+            Men ▾
+            <div class="dropdown" role="menu" aria-hidden="true">
+              <a href="#" data-cat="men-jackets" role="menuitem">Jackets</a>
+              <a href="#" data-cat="men-shoes" role="menuitem">Shoes</a>
+              <a href="#" data-cat="men-accessories" role="menuitem">Accessories</a>
+            </div>
+          </div>
+
+          <a href="#" class="nav-link" data-cat="offers">Offers</a>
+          <a href="#" class="nav-link" data-cat="contact">Contact</a>
+        </nav>
+
+        <div class="header-tools">
+          <div class="search-compact" role="search" aria-label="Header search">
+            <input id="headerSearch" type="search" placeholder="Search products…" aria-label="Search products">
+            <button id="headerSearchBtn" aria-label="Search">🔍</button>
+          </div>
+
+          <button id="openCartBtn" class="cart-btn" aria-haspopup="dialog" aria-expanded="false" title="Open cart">
+            <span>🛒</span><span id="cartCount" class="cart-count">0</span>
+          </button>
+
+          <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">☰</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile slide nav -->
+  <aside id="mobileNav" class="mobile-nav" aria-hidden="true">
+    <button class="close-mobile" id="closeMobileNav" aria-label="Close menu">✕</button>
+    <div class="mobile-search">
+      <input id="mobileSearch" type="search" placeholder="Search products…" aria-label="Search products (mobile)">
+      <button id="mobileSearchBtn" aria-label="Search">🔍</button>
+    </div>
+    <nav class="mobile-links" aria-label="Mobile navigation">
+      <a href="#" data-cat="all">Home</a>
+      <a href="#" data-cat="women">Women</a>
+      <a href="#" data-cat="men">Men</a>
+      <a href="#" data-cat="offers">Offers</a>
+      <a href="#" data-cat="contact">Contact</a>
+    </nav>
+    <div style="margin-top:auto">
+      <a href="#" style="display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none">Login</a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="container" id="mainContent">
+    <section class="hero" aria-label="Hero section">
+      <img src="images/Fassion-store-banner.jpg" alt="Fashion banner" loading="lazy">
+      <h1 class="site-title">Alina Fashion Store</h1>
+      <p class="site-sub">Step Into Style — curated picks for everyone</p>
+    </section>
+
+    <div class="toolbar" role="region" aria-label="Search and filter">
+      <div class="search" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#9aa0a6" d="M21 20l-4.35-4.35A7.5 7.5 0 1 0 16.65 16.65L21 21z"/></svg>
+        <input id="searchInput" type="search" placeholder="Search products (e.g. saree, jacket)" aria-label="Search products">
+        <button id="clearSearch" aria-label="Clear search">✕</button>
+      </div>
+
+      <div class="filters" role="region" aria-label="Sort and filters">
+        <label for="sortSelect" style="font-size:13px;color:var(--muted)">Sort:</label>
+        <select id="sortSelect" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+          <option value="alpha">A → Z</option>
+        </select>
+      </div>
+    </div>
+
+    <section aria-label="Products" class="products">
+      <h2 style="text-align:center;margin-bottom:12px">Our Products</h2>
+      <div id="productGrid" class="product-container" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- Overlay -->
+  <div id="overlay" class="overlay" tabindex="-1" aria-hidden="true"></div>
+
+  <!-- Cart Drawer -->
+  <aside id="cartDrawer" class="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart" aria-hidden="true">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <h4>Your Cart</h4>
+      <button id="closeCartBtn" class="close" aria-label="Close cart">✕</button>
+    </div>
+    <div id="cartItems" class="cart-items" aria-live="polite"></div>
+    <div id="cartEmpty" class="cart-empty" style="display:none;color:var(--muted);padding:12px;text-align:center">Your cart is empty.</div>
+    <div class="cart-total" style="margin-top:10px"><div>Total</div><div id="cartTotal">$0.00</div></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button id="checkoutBtn" class="btn" style="flex:1">Checkout</button>
+      <button id="clearCartBtn" class="btn secondary" style="flex:1">Clear</button>
+    </div>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="document" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <button id="closeModal" class="close" aria-label="Close">✕</button>
+      <div class="grid">
+        <div>
+          <img id="modalImg" src="" alt="" loading="lazy">
+        </div>
+        <div>
+          <h3 id="modalTitle"></h3>
+          <p id="modalDesc" class="meta"></p>
+          <p class="price" id="modalPrice"></p>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <div class="qty-input" style="margin-right:8px">
+              <button id="modalQtyDec" aria-label="Decrease">−</button>
+              <input id="modalQty" type="number" min="1" value="1" style="width:56px;padding:6px;border-radius:8px;border:1px solid #eee;text-align:center">
+              <button id="modalQtyInc" aria-label="Increase">＋</button>
+            </div>
+            <button id="modalAddToCart" class="btn">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal (collect customer info) -->
+  <div id="checkoutModalOverlay" class="modal-overlay" style="display:none;align-items:center;justify-content:center;" aria-hidden="true">
+    <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-describedby="checkoutDesc" style="position:relative">
+      <button id="closeCheckoutModal" class="close" aria-label="Close checkout" style="position:absolute;right:12px;top:10px">✕</button>
+      <h3 id="checkoutTitle">Ready to place your order?</h3>
+      <div id="checkoutDesc" class="meta" style="margin-bottom:12px">Please provide phone, email and shipping address to confirm your order.</div>
+
+      <form id="checkoutForm" class="checkout-form" onsubmit="return false;">
+        <div>
+          <label for="customerName">Name (optional)</label>
+          <input id="customerName" type="text" placeholder="Your name">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px">
+            <label for="customerPhone">Phone <span style="color:var(--accent)">*</span></label>
+            <input id="customerPhone" type="tel" placeholder="+8801XXXXXXXXX" required>
+          </div>
+          <div style="flex:1;min-width:160px">
+            <label for="customerEmail">Email <span style="color:var(--accent)">*</span></label>
+            <input id="customerEmail" type="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+        <div>
+          <label for="customerAddress">Shipping address <span style="color:var(--accent)">*</span></label>
+          <textarea id="customerAddress" placeholder="Street, City, Postal code..." required></textarea>
+        </div>
+      </form>
+
+      <div id="checkoutSummary" style="background:#fafafa;border-radius:8px;padding:10px;margin-bottom:12px">
+        <div style="color:var(--muted)">Loading summary…</div>
+      </div>
+
+      <div style="display:flex;gap:8px">
+        <button id="confirmOrderBtn" class="btn" style="flex:1">Confirm & Place Order</button>
+        <button id="cancelOrderBtn" class="btn secondary" style="flex:1">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="text-align:center;padding:18px 0">
+      <h3 style="color:#fff;margin-bottom:10px">Alina Fashion Store</h3>
+      <div style="margin-bottom:8px">
+        <a href="#" target="_blank" rel="noopener noreferrer"><img src="images/facebook.png" alt="Facebook" loading="lazy"></a>
+        <a href="#" target="_blank" rel="noopener noreferrer"><img src="images/instagram.png" alt="Instagram" loading="lazy"></a>
+      </div>
+      <div style="color:#bdbdbd;font-size:14px">&copy; <span id="year"></span> Alina Fashion Store. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script src="js/custom.js"></script>
+</body>
+</html>
